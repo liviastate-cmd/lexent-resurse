@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEXENT | Figuri de stil</title>
+<style>
+:root{--navy:#203b55;--teal:#318b83;--paper:#f7f5ef;--ink:#243342;--muted:#687783;--line:#e2e6e5;--white:#fff;--gold:#c49b55}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Arial,sans-serif}
+.wrap{max-width:850px;margin:0 auto;padding:24px 16px 50px}
+.hero{background:linear-gradient(130deg,#203b55,#315e70);color:white;border-radius:20px;padding:30px 28px;margin-bottom:18px}
+.eyebrow{font-size:11px;letter-spacing:2px;font-weight:700;color:#c7dedb}
+h1{font: bold 34px/1.15 Georgia,serif;margin:12px 0}
+.hero p{color:#e4eeec;margin:0;font:17px Georgia,serif}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.pill{border:1px solid #ffffff55;border-radius:30px;padding:5px 11px;font-size:12px}
+.card,.question{background:var(--white);border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:13px;box-shadow:0 2px 8px #203b5508}
+.progress-head{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:10px}
+.bar{height:8px;background:#edf0ef;border-radius:10px;overflow:hidden}.bar>div{height:100%;width:0;background:var(--teal);transition:width .2s}
+.small{font-size:13px;color:var(--muted)}.section-title{font-weight:700;margin:22px 0 12px}
+.number{font-size:11px;letter-spacing:1.5px;color:var(--teal);font-weight:800}
+.quote{font:19px/1.6 Georgia,serif;margin:13px 0 16px}
+label{font-size:13px;font-weight:700;display:block;margin-bottom:7px}
+select{width:100%;padding:12px;border:1px solid #d9e0df;border-radius:9px;background:#fff;color:#243342;font-size:15px}
+select:focus,button:focus{outline:3px solid #91c9c2;outline-offset:2px}
+.feedback{font-size:13px;line-height:1.55;margin-top:12px}
+.question.good{border-color:#318b83}.question.bad{border-color:#c66b64}
+button{border:0;border-radius:10px;padding:13px 17px;font-weight:700;font-size:15px;cursor:pointer}
+.mainbtn{background:var(--navy);color:white;width:100%}.altbtn{background:#edf1f0;color:var(--navy);width:100%;border:1px solid var(--line);margin-top:10px}
+.result{background:#f0f5f3;border-radius:12px;padding:18px;margin-top:14px}
+.result-score{font: bold 42px Georgia,serif;margin:4px 0}
+footer{text-align:center;padding:24px 0 0;color:var(--muted)}
+.brand{font:22px Georgia,serif;letter-spacing:3px;color:var(--teal)}
+@media(max-width:560px){.wrap{padding:14px 11px 35px}.hero{padding:23px 19px}h1{font-size:29px}.card,.question{padding:15px}.quote{font-size:18px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="hero">
+<div class="eyebrow">LEXENT · ÎNVĂȚARE INTERACTIVĂ</div>
+<h1>Figurile de stil</h1>
+<p>Descoperă expresivitatea limbajului artistic.</p>
+<div class="pills"><span class="pill">12 categorii</span><span class="pill">24 de itemi</span><span class="pill">Feedback automat</span></div>
+</header>
+<section class="card">
+<div class="progress-head"><span>Progresul tău</span><span id="count">0 / 24</span></div>
+<div class="bar"><div id="bar"></div></div>
+<div class="small" style="display:flex;justify-content:space-between;margin-top:10px"><span>Răspunsuri corecte până acum</span><strong id="score">0</strong></div>
+</section>
+<section class="card">
+<strong>Instrucțiuni</strong>
+<p class="small" style="line-height:1.7;margin-bottom:0">Citește cu atenție fiecare enunț. Identifică figura de stil și selectează varianta corectă. La final, verifică răspunsurile și consultă explicațiile.</p>
+</section>
+<div class="section-title">Exerciții</div>
+<div id="questions"></div>
+<section class="card">
+<h2 style="font: bold 22px Georgia,serif;margin:0 0 7px">Ai terminat?</h2>
+<p class="small">Verifică răspunsurile pentru a vedea rezultatul și explicațiile.</p>
+<button class="mainbtn" id="check">Verifică răspunsurile</button>
+<div id="result" aria-live="polite"></div>
+<button class="altbtn" id="reset">↻ Reia exercițiul</button>
+</section>
+<footer><div class="brand">LEXENT</div><div class="small">Româna în acțiune!</div></footer>
+</main>
+<script>
+const categories=['Epitet','Comparație','Metaforă','Antiteză','Personificare','Repetiție','Enumerație','Inversiune','Interogație retorică','Exclamație retorică','Invocație retorică','Adresare retorică'];
+const data=[
+['Pe bolta senină, luna argintie își revarsă lumina.','Epitet','„Senină” și „argintie” exprimă însușiri cu valoare expresivă.'],
+['În suflet îi răsuna o tristețe adâncă.','Epitet','„Adâncă” accentuează expresiv intensitatea tristeții.'],
+['Chipul ei strălucea ca o floare în rouă.','Comparație','Apropierea explicită este realizată prin termenul „ca”.'],
+['Bătrânul era statornic precum stânca.','Comparație','Însușirea este comparată explicit cu cea a stâncii.'],
+['În sufletul meu a răsărit speranța.','Metaforă','Speranța este prezentată figurat ca o plantă care răsare.'],
+['Ochii lui erau două izvoare de lumină.','Metaforă','Ochii sunt identificați figurat cu izvoare de lumină.'],
+['Unii construiesc punți, alții ridică ziduri.','Antiteză','Punțile și zidurile sugerează opoziția dintre apropiere și separare.'],
+['Ziua râdea, noaptea plângea.','Antiteză','Ziua și noaptea, râsul și plânsul sunt imagini opuse.'],
+['Pădurea șoptea tainele toamnei.','Personificare','Pădurii i se atribuie acțiunea omenească de a șopti.'],
+['Soarele își întindea brațele peste câmpie.','Personificare','Soarelui îi este atribuită o acțiune umană.'],
+['Te-am căutat în zori, te-am căutat în amurg, te-am căutat în vis.','Repetiție','Structura „te-am căutat” este reluată pentru a accentua căutarea.'],
+['Nici vântul, nici ploaia, nici timpul nu mă vor opri.','Repetiție','Conjuncția „nici” este reluată pentru intensificare.'],
+['Pe masă erau cărți, caiete, reviste, dicționare și ziare.','Enumerație','Sunt înșiruite mai multe elemente din aceeași categorie.'],
+['Am întâlnit oameni curajoși, visători, sensibili, generoși.','Enumerație','Mai multe însușiri sunt prezentate succesiv.'],
+['Frumoasă este primăvara în satul meu!','Inversiune','Ordinea obișnuită a cuvintelor este modificată pentru accentuare.'],
+['Departe, peste dealuri, se auzea un cântec.','Inversiune','Topica este modificată pentru a scoate în evidență adverbul.'],
+['Cine ar putea opri zborul gândului?','Interogație retorică','Întrebarea nu așteaptă un răspuns, ci exprimă o idee.'],
+['Cum să uităm locurile în care am copilărit?','Interogație retorică','Întrebarea sugerează imposibilitatea uitării.'],
+['Ce minunată este această lume!','Exclamație retorică','Construcția exclamativă exprimă admirație intensă.'],
+['O, câtă frumusețe se ascunde în sufletul omului!','Exclamație retorică','Exclamația transmite o emoție puternică.'],
+['O, Muză, inspiră-mi cântul și dă glas cuvintelor mele!','Invocație retorică','Este chemată o muză pentru a oferi inspirație.'],
+['Vino, primăvară, și trezește natura la viață!','Invocație retorică','Primăvara este chemată direct ca forță simbolică.'],
+['O, timp nemilos, de ce fugi atât de repede?','Adresare retorică','Discursul se adresează direct timpului, o noțiune abstractă.'],
+['Tu, copilărie, mi-ai rămas lumină în suflet!','Adresare retorică','Copilăria este destinatarul unei adresări directe și afective.']
+];
+let answers=Array(24).fill(''),finished=false;
+const $=id=>document.getElementById(id);
+function update(){let n=answers.filter(Boolean).length;$('count').textContent=n+' / 24';$('bar').style.width=(n/24*100)+'%';$('score').textContent=answers.filter((a,i)=>a===data[i][1]).length}
+function render(){
+$('questions').innerHTML=data.map((d,i)=>`<article class="question" id="q${i}"><div class="number">EXERCIȚIUL ${String(i+1).padStart(2,'0')}</div><div class="quote">„${d[0]}”</div><label for="a${i}">Ce figură de stil este utilizată?</label><select id="a${i}" ${finished?'disabled':''}><option value="">Selectează răspunsul</option>${categories.map(c=>`<option value="${c}" ${answers[i]===c?'selected':''}>${c}</option>`).join('')}</select><div class="feedback"></div></article>`).join('');
+data.forEach((d,i)=>$('a'+i).addEventListener('change',e=>{answers[i]=e.target.value;update()}));update();if(finished)showFeedback();
+}
+function showFeedback(){
+let score=0;
+data.forEach((d,i)=>{let el=$('q'+i),f=el.querySelector('.feedback');if(answers[i]===d[1]){score++;el.classList.add('good');f.innerHTML='<strong style="color:#247b70">✓ Corect!</strong> '+d[2]}else{el.classList.add('bad');f.innerHTML='<strong style="color:#b34f49">✕ Răspuns corect: '+d[1]+'</strong><br>'+d[2]}});
+let p=Math.round(score/24*100);
+$('result').innerHTML=`<div class="result"><div class="small" style="letter-spacing:1.5px">REZULTAT FINAL</div><div class="result-score">${score} / 24</div><strong>${p}% răspunsuri corecte</strong><p class="small">${p>=90?'Felicitări! Ai identificat cu precizie figurile de stil.':p>=75?'Foarte bine! Mai exersează noțiunile la care ai greșit.':p>=50?'Rezultat încurajator. Recitește explicațiile și consolidează noțiunile.':'Reia definițiile și încearcă din nou. Exercițiul te va ajuta să progresezi.'}</p></div>`;
+$('check').textContent='Verificare finalizată';$('check').disabled=true;
+}
+$('check').addEventListener('click',()=>{if(answers.some(a=>!a)){$('result').innerHTML='<p style="color:#a16d20;font-size:14px">Completează toate exercițiile înainte de verificare.</p>';return}finished=true;render();showFeedback()});
+$('reset').addEventListener('click',()=>{answers=Array(24).fill('');finished=false;$('result').innerHTML='';$('check').disabled=false;$('check').textContent='Verifică răspunsurile';render()});
+render();
+</script>
+</body>
+</html>
